@@ -1,31 +1,28 @@
-/* index.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+
+
+@import "tailwindcss";
+
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased text-slate-900 bg-slate-50;
+    
+  }
 }
 
-:root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  /* Force a consistent light background to avoid "invisible" text */
-  color: #2d3748;
-  background-color: #f8fafc;
-}
 
-body {
-  margin: 0;
-  width: 100%;
-  min-height: 100vh;
-  /* Removed display: flex and place-items: center */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-/* Ensure all text is visible in the table */
-table {
-  color: #2d3748 !important;
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
 }
-
-td, th {
-  color: #4a5568 !important;
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
 }
