@@ -2,6 +2,6 @@
 
 GitHub Repo: https://github.com/yukti-payak/money-manager-frontend
 
-Last Commit Hash: 4aa95bc5f4c642fbc26d6ac20f01412a6b3605cf
+Last Commit Hash: a4046f9f9ef338a6f2227777bc3fb6d11502f67d
 
 Frontend Live URL: https://money-manager-frontend-lovat.vercel.app/
