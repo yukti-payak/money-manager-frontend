@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
-
+import { addTransaction, updateTransaction, transferFunds } from '../services/api'; 
 
 const TransactionModal = ({ onClose, onRefresh, editData }) => {
   
@@ -36,32 +36,35 @@ const TransactionModal = ({ onClose, onRefresh, editData }) => {
   };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const isTransfer = formData.type === "transfer";
-    const url = isTransfer 
-      ? "http://localhost:3000/api/transactions/transfer" 
-      : (editData ? `http://localhost:3000/api/transactions/${editData._id}` : "http://localhost:3000/api/transactions");
-    
-    try {
-      const response = await fetch(url, {
-        method: isTransfer ? "POST" : (editData ? "PUT" : "POST"),
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
 
-      const result = await response.json();
-      if (response.ok && result.success) {
-        onRefresh();
-        onClose();
-      } else {
-        alert(result.message || "Operation failed");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("Network error.");
-    }
-  };
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const isTransfer = formData.type === "transfer";
+  
+  try {
+    let response;
+    
+    if (isTransfer) {
+      response = await transferFunds(formData);
+    } else if (editData) {
+      response = await updateTransaction(editData._id, formData);
+    } else {
+      response = await addTransaction(formData);
+    }
+
+    if (response.data && response.data.success) {
+      onRefresh();
+      onClose();
+    }
+  } catch (error) {
+    
+    console.error("Submission error:", error);
+    const message = error.response?.data?.message || "Server is waking up";
+    alert(message);
+  }
+};
   
   const inputClass = "w-full mt-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-800";
   const labelClass = "text-sm font-semibold text-slate-600 ml-1";
