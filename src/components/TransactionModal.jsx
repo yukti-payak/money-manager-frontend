@@ -1,6 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
+import { addTransaction, updateTransaction, transferFunds } from '../api';
 
 const TransactionModal = ({ onClose, onRefresh, editData }) => {
   
@@ -35,7 +36,6 @@ const TransactionModal = ({ onClose, onRefresh, editData }) => {
   };
 
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
   const isTransfer = formData.type === "transfer";
@@ -43,10 +43,12 @@ const handleSubmit = async (e) => {
   try {
     let response;
     
+    
     if (isTransfer) {
       
+      response = await transferFunds(formData); 
     } else if (editData) {
-
+      
       response = await updateTransaction(editData._id, formData);
     } else {
       
@@ -55,17 +57,20 @@ const handleSubmit = async (e) => {
 
     
     if (response.data && response.data.success) {
-      onRefresh();
-      onClose();
+      onRefresh(); 
+      onClose();   
+    } else {
+      alert(response.data.message || "Operation failed");
     }
   } catch (error) {
     console.error("Submission error:", error);
     
-    const message = error.response?.data?.message || "Network error or Server is sleeping";
+    
+    const message = error.response?.data?.message || 
+                   "Network error or Server is sleeping. Please wait 30 seconds and try again.";
     alert(message);
   }
 };
-
   
   const inputClass = "w-full mt-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-800";
   const labelClass = "text-sm font-semibold text-slate-600 ml-1";
