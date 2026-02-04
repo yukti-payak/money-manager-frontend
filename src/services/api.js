@@ -24,3 +24,4 @@ export const addTransaction = (data) => API.post('/', data);
 
 export const updateTransaction = (id, data) => API.put(`/${id}`, data);
 export const deleteTransaction = (id) => API.delete(`/${id}`);
+export const transferFunds = (data) => API.post('/transfer', data);
