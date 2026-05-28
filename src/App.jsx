@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState, useEffect } from "react";
 import StatsCards from "./components/StatsCards";
 import Charts from "./components/Charts";
@@ -28,15 +24,33 @@ function App() {
     }
   };
 
-  useEffect(() => { loadData(); }, [filters]);
+useEffect(() => {
+    loadData();
+  }, [filters]);
+  const income = useMemo(() => {
+    return transactions
+      .filter((t) => t.type === "income")
+      .reduce((a, b) => a + b.amount, 0);
+  }, [transactions]);
 
-  const income = transactions.filter(t => t.type === 'income').reduce((a, b) => a + b.amount, 0);
-  const expense = transactions.filter(t => t.type === 'expense').reduce((a, b) => a + b.amount, 0);
+  const expense = useMemo(() => {
+    return transactions
+      .filter((t) => t.type === "expense")
+      .reduce((a, b) => a + b.amount, 0);
+  }, [transactions]);
 
-  const pieData = {
-    labels: ['Income', 'Expense'],
-    datasets: [{ data: [income, expense], backgroundColor: ['#22c55e', '#ef4444'] }]
-  };
+  const pieData = useMemo(() => {
+    return {
+      labels: ["Income", "Expense"],
+      datasets: [
+        {
+          data: [income, expense],
+          backgroundColor: ["#22c55e", "#ef4444"],
+        },
+      ],
+    };
+  }, [income, expense]);
+
 
   const handleDelete = async (id) => {
     try {
