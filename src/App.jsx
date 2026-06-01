@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import StatsCards from "./components/StatsCards";
 import Charts from "./components/Charts";
 import HistoryTable from "./components/HistoryTable";
